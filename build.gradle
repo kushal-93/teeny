@@ -14,12 +14,41 @@ repositories {
 }
 
 dependencies {
+    // --- Annotation Processors ---
+    // Micronaut's compile-time magic happens here.
+    // These run at build time to generate glue code (no reflection at runtime).
     annotationProcessor("io.micronaut:micronaut-http-validation")
     annotationProcessor("io.micronaut.serde:micronaut-serde-processor")
-    implementation("io.micronaut.serde:micronaut-serde-jackson")
-    compileOnly("io.micronaut:micronaut-http-client")
-    runtimeOnly("ch.qos.logback:logback-classic")
+    annotationProcessor("io.micronaut.data:micronaut-data-processor")        // generates repository query code at compile time
+    annotationProcessor("io.micronaut.security:micronaut-security-annotations") // processes @Secured annotations
+
+    // --- Serialization ---
+    implementation("io.micronaut.serde:micronaut-serde-jackson")             // JSON serialize/deserialize via Jackson
+
+    // --- HTTP ---
+    implementation("io.micronaut:micronaut-http-client")                     // HTTP client (used in tests + future inter-service calls)
+
+    // --- Data / Database ---
+    implementation("io.micronaut.data:micronaut-data-hibernate-jpa")         // Micronaut Data JPA (like Spring Data JPA but compile-time)
+    implementation("io.micronaut.sql:micronaut-jdbc-hikari")                 // HikariCP connection pool
+    runtimeOnly("org.postgresql:postgresql")                                 // PostgreSQL JDBC driver (runtime only — no compile-time dep)
+
+    // --- Database Migrations ---
+    implementation("io.micronaut.flyway:micronaut-flyway")                   // Flyway runs migrations on startup automatically
+
+    // --- Security / JWT ---
+    implementation("io.micronaut.security:micronaut-security-jwt")           // JWT token generation + validation
+
+    // --- Redis ---
+    implementation("io.micronaut.redis:micronaut-redis-lettuce")             // Lettuce Redis client (Micronaut's recommended Redis client)
+
+    // --- Logging ---
+    runtimeOnly("ch.qos.logback:logback-classic")                           // Logback logging implementation
+
+    // --- Test ---
     testImplementation("io.micronaut:micronaut-http-client")
+    testImplementation("org.testcontainers:postgresql")                      // Testcontainers: spins up real PostgreSQL for integration tests
+    testImplementation("org.testcontainers:testcontainers")                  // Testcontainers core
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
