@@ -29,7 +29,7 @@ dependencies {
     implementation("io.micronaut:micronaut-http-client")                     // HTTP client (used in tests + future inter-service calls)
 
     // --- Data / Database ---
-    implementation("io.micronaut.data:micronaut-data-hibernate-jpa")         // Micronaut Data JPA (like Spring Data JPA but compile-time)
+    implementation("io.micronaut.data:micronaut-data-jdbc")                  // Micronaut Data JDBC
     implementation("io.micronaut.sql:micronaut-jdbc-hikari")                 // HikariCP connection pool
     runtimeOnly("org.postgresql:postgresql")                                 // PostgreSQL JDBC driver (runtime only — no compile-time dep)
 
