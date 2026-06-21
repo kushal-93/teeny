@@ -19,10 +19,6 @@ CREATE TABLE urls
 
     CONSTRAINT uq_urls_short_code UNIQUE (short_code),
 
-    -- Idempotency constraint: same user submitting same URL gets the same short code back.
-    -- This is enforced at the DB level (not application level) to handle race conditions.
-    CONSTRAINT uq_urls_user_original UNIQUE (user_id, original_url),
-
     CONSTRAINT fk_urls_user FOREIGN KEY (user_id) REFERENCES users (id)
 );
 
