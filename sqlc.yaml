@@ -1,0 +1,14 @@
+version: "2"
+sql:
+  - engine: "postgresql"
+    schema: "db/migrations"             # sqlc parses the migrations folder directly to infer table schemas
+    queries: "db/queries"               # sqlc reads raw queries from this folder
+    gen:
+      go:
+        package: "db"                   # output Go package name
+        out: "internal/db"              # output target directory
+        sql_package: "pgx/v5"          # use high-performance pgx driver version 5
+        emit_json_tags: true            # generate json tags automatically on model structs
+        emit_prepared_queries: false
+        emit_interface: true            # generate a DB interface to easily mock DB in service tests
+        emit_empty_slices: true

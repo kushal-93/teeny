@@ -1,7 +1,5 @@
--- V1: Create users table
--- Users authenticate with email + password (bcrypt hashed).
--- Email is the unique login identifier — no separate username.
-
+-- +goose Up
+-- +goose StatementBegin
 CREATE TABLE users
 (
     id            BIGSERIAL PRIMARY KEY,
@@ -12,5 +10,10 @@ CREATE TABLE users
     CONSTRAINT uq_users_email UNIQUE (email)
 );
 
--- Index on email: every login does a lookup by email — this must be fast.
 CREATE INDEX idx_users_email ON users (email);
+-- +goose StatementEnd
+
+-- +goose Down
+-- +goose StatementBegin
+DROP TABLE IF EXISTS users;
+-- +goose StatementEnd
